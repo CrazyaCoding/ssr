@@ -1,0 +1,24 @@
+{
+  "name": "vue-ssr-demo",
+  "version": "1.0.0",
+  "description": "vue ssr demo学习",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config build/webpack.config.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-loader": "^7.1.5",
+    "vue": "^2.6.10",
+    "vue-loader": "^15.7.0",
+    "vue-template-compiler": "^2.6.10",
+    "webpack": "^4.35.2",
+    "webpack-cli": "^3.3.5"
+  },
+  "dependencies": {
+    "babel-core": "^6.26.3",
+    "vue-server-renderer": "^2.6.10"
+  }
+}
