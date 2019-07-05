@@ -2,7 +2,6 @@ const Vue = require('vue');
 const express = require('express');
 const server = express();
 const createRenderer = require('vue-server-renderer').createRenderer;
-// const app = require('./dist/server-bundle.js').default;
 const createApp = require('./dist/server-bundle.js').default;
 
 const renderer = createRenderer({
@@ -13,16 +12,16 @@ server.use(express.static('dist')); // 为了让client-bundle.js能够被加载 
 server.use('/dist', express.static('dist'));
 
 server.get('*', (req, res) => {
-	const content = {
+	const context = {
 		title: 'hello',
 		meta: `
 		  <meta charset="utf8">
-		`
-	  }
-	const context = {url: req.url};
+		`,
+		url: req.url
+	};
 
 	createApp(context).then((app) => {
-		renderer.renderToString(app, content, (err, html) => {
+		renderer.renderToString(app, context, (err, html) => {
 			if (err) {
 				if (err.code === '404') {
 					res.status(404).end('Page not found');
@@ -36,6 +35,7 @@ server.get('*', (req, res) => {
 			
 		})
 	}).catch(error => {
+		console.log(error);
 		res.status(404).end('Page not found')
 	});
 });

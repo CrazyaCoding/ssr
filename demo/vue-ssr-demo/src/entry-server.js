@@ -1,7 +1,7 @@
 import { createApp } from './main';
 export default context => {
 	return new Promise((resolve, reject) => {
-		const { app, router} = createApp();
+		const { app, router, store} = createApp();
 		router.push(context.url);
 
 		router.onReady(() => {
@@ -10,8 +10,20 @@ export default context => {
 			if (!matchedComponents.length) {
 				reject({code: 404});
 			}
-			// 这里返回的app用于服务端渲染页面
-			resolve(app)
+
+			Promise.all(matchedComponents.map(Component => {
+				if (Component.asyncData) {
+					return Component.asyncData({store, route: router.currentRoute});
+				} else {
+					return new Promise(resolve => {
+						resolve();
+					})
+				}
+			})).then(() => {
+				context.state = store.state;
+				// 这里返回的app用于服务端渲染页面
+				resolve(app)
+			});
 		}, reject);
 	});
 }

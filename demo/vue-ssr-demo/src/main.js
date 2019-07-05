@@ -1,23 +1,19 @@
 import Vue from 'vue';
 import App from './app.vue';
 import { createRouter } from './router/index';
-/* 不可用的一段代码 我也不知道为啥
- new Vue({
-	el: '#app',
-	components: { App },
-	template: '<App/>'
-}); */
-
-/* new Vue({
-	render: h => h(App)
-}).$mount('#app'); */
-
+import { createStore } from './store/index';
+import { sync } from 'vuex-router-sync';
 
 export function createApp() {
 	const router = createRouter();
+	const store = createStore();
+
+	sync(store, router)
+
 	const app = new Vue({
 		router,
+		store,
 		render: h => h(App)
 	});
-	return { app, router }
+	return { app, router, store }
 };
