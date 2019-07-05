@@ -10,23 +10,34 @@ const renderer = createRenderer({
 });
 
 server.use(express.static('dist')); // 为了让client-bundle.js能够被加载 所以页面上引用的client-bundle.js是直接引用 没有加地址
+server.use('/dist', express.static('dist'));
 
 server.get('*', (req, res) => {
-	const context = {
+	const content = {
 		title: 'hello',
-		meta: `<meta charset="utf-8">`
-	};
-	const app = createApp({
-		url: req.url
-	});
+		meta: `
+		  <meta charset="utf8">
+		`
+	  }
+	const context = {url: req.url};
 
-	renderer.renderToString(app, context, (err, html) => {
-		if (err) {
-			res.status(500).end('Internal Server Error')
-			return;
-		}
-		res.send(html);
-	})
+	createApp(context).then((app) => {
+		renderer.renderToString(app, content, (err, html) => {
+			if (err) {
+				if (err.code === '404') {
+					res.status(404).end('Page not found');
+				} else {	
+					res.status(500).end('Internal Server Error')
+				}
+				return;
+			} else {
+				res.send(html);
+			}
+			
+		})
+	}).catch(error => {
+		res.status(404).end('Page not found')
+	});
 });
 
 

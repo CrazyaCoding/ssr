@@ -1,8 +1,12 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Home from './../view/home/index.vue';
-import List from './../view/list/index.vue';
-import Detail from './../view/detail/index.vue';
+// import Home from './../view/home/index.vue';
+// import List from './../view/list/index.vue';
+// import Detail from './../view/detail/index.vue';
+
+const Home = () => import('./../view/home/index.vue');
+const List = () => import('./../view/list/index.vue');
+const Detail = () => import('./../view/detail/index.vue');
 
 Vue.use(Router);
 
