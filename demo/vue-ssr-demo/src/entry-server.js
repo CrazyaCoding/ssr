@@ -1,6 +1,7 @@
 import { createApp } from './main';
 
 export default context => {
-	const { app } = createApp();
-	return app;
+	const { app, router } = createApp();
+	router.push(context.url);
+	return app;	
  }

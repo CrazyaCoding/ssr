@@ -2,7 +2,8 @@ const Vue = require('vue');
 const express = require('express');
 const server = express();
 const createRenderer = require('vue-server-renderer').createRenderer;
-const app = require('./dist/server-bundle.js').default;
+// const app = require('./dist/server-bundle.js').default;
+const createApp = require('./dist/server-bundle.js').default;
 
 const renderer = createRenderer({
 	template: require('fs').readFileSync('./index.template.html', 'utf-8')
@@ -15,8 +16,11 @@ server.get('*', (req, res) => {
 		title: 'hello',
 		meta: `<meta charset="utf-8">`
 	};
+	const app = createApp({
+		url: req.url
+	});
 
-	renderer.renderToString(app(), context, (err, html) => {
+	renderer.renderToString(app, context, (err, html) => {
 		if (err) {
 			res.status(500).end('Internal Server Error')
 			return;

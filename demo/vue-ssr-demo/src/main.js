@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import App from './app.vue';
-
+import { createRouter } from './router/index';
 /* 不可用的一段代码 我也不知道为啥
  new Vue({
 	el: '#app',
@@ -14,8 +14,10 @@ import App from './app.vue';
 
 
 export function createApp() {
+	const router = createRouter();
 	const app = new Vue({
+		router,
 		render: h => h(App)
 	});
-	return { app }
+	return { app, router }
 };
